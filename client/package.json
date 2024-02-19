@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/match-sorter-utils": "^8.11.8",
+    "@tanstack/react-table": "^8.12.0",
     "autoprefixer": "^10.4.17",
     "axios": "^1.6.7",
     "dotenv": "^16.4.4",

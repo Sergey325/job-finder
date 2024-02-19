@@ -1,7 +1,7 @@
 import express from "express";
 import {
     getAllContracts,
-} from "../controllers/vacancies.js"
+} from "../controllers/contracts.js"
 import { verifiedToken } from "../middleware/auth.js";
 
 const router = express.Router()

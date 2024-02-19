@@ -1,11 +1,13 @@
-type Props = {
+// type Props = {
+//
+// };
 
-};
+import DataTable from "../../components/Seeker/DataTable.tsx";
 
-const HomePage = (props: Props) => {
+const HomePage = () => {
     return (
         <div>
-            home
+            <DataTable></DataTable>
         </div>
     );
 };
