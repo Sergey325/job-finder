@@ -1,20 +1,24 @@
 import mongoose from "mongoose";
 
-const ContractSchema = new mongoose.Schema(
+const VacancySchema = new mongoose.Schema(
     {
-        applicantId: {
+        name: {
             type: String,
             required: true,
         },
-        vacancyId: {
+        description: {
             type: String,
             required: true,
         },
-        jobPosition: {
+        location: {
             type: String,
             required: true,
         },
-        applicantFullName: {
+        salary: {
+            type: String,
+            required: true,
+        },
+        workType: {
             type: String,
             required: true,
         },
@@ -22,14 +26,10 @@ const ContractSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        companyAddress: {
-            type: String,
-            required: true,
-        },
     }, {timestamps: true}
 )
 
 
-const Contract = mongoose.model("Contract", ContractSchema)
+const Vacancy = mongoose.model("Vacancy", VacancySchema)
 
-export default Contract;
+export default Vacancy;

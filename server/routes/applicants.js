@@ -1,16 +1,16 @@
-// import express from "express";
-// import {
-//     getAllapplicants,
-//     addAppicant,
-// } from "../controllers/applicants.js"
-// import { verifiedToken } from "../middleware/auth.js";
-//
-// const router = express.Router()
-//
-// // READ
-// router.get("/", verifiedToken, getAllapplicants)
-//
-// // CREATE
-// router.post("/", verifiedToken, addAppicant)
-//
-// export default router;
+import express from "express";
+import {
+    getAllApplicants,
+    createOrUpdateApplicant,
+} from "../controllers/applicants.js"
+import { verifiedToken } from "../middleware/auth.js";
+
+const router = express.Router()
+
+// READ
+router.get("/", verifiedToken, getAllApplicants)
+
+// CREATE / UPDATE
+router.post("/", verifiedToken, createOrUpdateApplicant)
+
+export default router;
