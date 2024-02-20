@@ -3,7 +3,7 @@ import create from 'zustand';
 
 const getToken = () => {
     const savedData = localStorage.getItem("authState");
-    console.log(`store ${savedData}`)
+
     if (savedData) {
         const { token } = JSON.parse(savedData);
         return token as string

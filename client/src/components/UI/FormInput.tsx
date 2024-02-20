@@ -31,14 +31,14 @@ const FormInput = ({id, label, type = "text", disabled, required, register, erro
                     border-2
                     rounded-md
                     outline-none
-                    text-neutral-dark
+                    text-gray-800
                     transition
                     duration-300
                     disabled:opacity-70
                     disabled:cursor-not-allowed
                     placeholder-neutral-main
-                    ${errors[id] ? 'border-rose-500' : "border-neutral-medium"}
-                    ${errors[id] ? 'focus:border-rose-500' : "focus:border-neutral-600"}
+                    ${errors[id] ? 'border-rose-500' : "border-gray-300"}
+                    ${errors[id] ? 'focus:border-rose-500' : "focus:border-neutral-400"}
                 `}
             />
             <label
@@ -56,7 +56,7 @@ const FormInput = ({id, label, type = "text", disabled, required, register, erro
                     peer-placeholder-shown:translate-y-0
                     peer-focus:scale-75
                     peer-focus:-translate-y-3
-                    ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
+                    ${errors[id] ? 'text-rose-500' : 'text-gray-800'}
                 `}>
                 {label}
             </label>

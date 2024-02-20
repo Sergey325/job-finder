@@ -11,7 +11,22 @@ export const getAllApplicants = async (req, res) => {
     }
 }
 
+// DELETE
+export const deleteApplicant = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const deletedApplicant = await Applicant.findByIdAndDelete(id);
+
+        if (!deletedApplicant) {
+            return res.status(404).json({ message: 'Шукача не знайдено' });
+        }
+
+        res.status(200).json({ message: 'Шукача видалено' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 // CREATE / UPDATE
 export const createOrUpdateApplicant = async (req, res) => {
@@ -19,7 +34,6 @@ export const createOrUpdateApplicant = async (req, res) => {
         firstName,
         lastName,
         email,
-        phoneNumber,
         jobPosition,
         qualification,
         cvUrl
@@ -32,7 +46,6 @@ export const createOrUpdateApplicant = async (req, res) => {
                 firstName,
                 lastName,
                 email,
-                phoneNumber,
                 jobPosition,
                 qualification,
                 cvUrl
@@ -44,7 +57,6 @@ export const createOrUpdateApplicant = async (req, res) => {
                 firstName,
                 lastName,
                 email,
-                phoneNumber,
                 jobPosition,
                 qualification,
                 cvUrl
