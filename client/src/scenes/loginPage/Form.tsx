@@ -33,13 +33,13 @@ const Form = (props: Props) => {
 
     const loginUser = (formData: FieldValues) => {
         setIsLoading(true)
-        axios.post(`http://localhost:5001/auth/login`, formData)
+        axios.post(`${import.meta.env.VITE_ENDPOINT}/auth/login`, formData)
             .then(res => {
                 const loggedIn = res.data
                 reset()
 
                 if (loggedIn) {
-                    toast.success("Logged in")
+                    toast.success("Успішний вхід")
                     auth.login(loggedIn.token)
                     navigate("/home");
                 }

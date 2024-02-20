@@ -19,12 +19,6 @@ const ApplicantSchema = new mongoose.Schema(
             max: 30,
             unique: true
         },
-        phoneNumber: {
-            type: String,
-            required: true,
-            max: 15,
-            unique: true
-        },
         jobPosition: {
             type: String,
             required: true,
@@ -38,7 +32,7 @@ const ApplicantSchema = new mongoose.Schema(
         cvUrl: {
             type: String,
             required: true,
-            max: 50,
+            max: 100,
         },
     }, {timestamps: true}
 )

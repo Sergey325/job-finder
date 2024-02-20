@@ -11,7 +11,22 @@ export const getAllVacancies = async (req, res) => {
     }
 }
 
+// DELETE
+export const deleteVacancy = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const deletedVacancy = await Vacancy.findByIdAndDelete(id);
+
+        if (!deletedVacancy) {
+            return res.status(404).json({ message: 'Вакансію не знайдено' });
+        }
+
+        res.status(200).json({ message: 'Вакансію видалено' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 // CREATE / UPDATE
 export const createOrUpdateVacancy = async (req, res) => {

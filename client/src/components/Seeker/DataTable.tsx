@@ -302,53 +302,50 @@ export default function DataTable() {
                     placeholder="Search all columns..."
                 />
             </div>
-            <div className="h-2"/>
-            <table>
-                <thead>
-                {table.getHeaderGroups().map(headerGroup => (
-                    <tr key={headerGroup.id}>
-                        {headerGroup.headers.map(header => {
-                            return (
-                                <th key={header.id} colSpan={header.colSpan}>
-                                    {header.isPlaceholder ? null : (
-                                        <>
-                                            <div
-                                                {...{
-                                                    className: header.column.getCanSort()
-                                                        ? 'cursor-pointer select-none'
-                                                        : '',
-                                                    onClick: header.column.getToggleSortingHandler(),
-                                                }}
-                                            >
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                                {{
-                                                    asc: ' 🔼',
-                                                    desc: ' 🔽',
-                                                }[header.column.getIsSorted() as string] ?? null}
-                                            </div>
-                                            {header.column.getCanFilter() ? (
-                                                <div>
-                                                    <Filter column={header.column} table={table}/>
+            <div className="w-fit mt-2">
+                <table className="rounded-xl">
+                    <thead>
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <tr key={headerGroup.id} className="bg-neutral-300 ">
+                            {headerGroup.headers.map(header => {
+                                return (
+                                    <th key={header.id} colSpan={header.colSpan} className="p-2">
+                                        {header.isPlaceholder ? null : (
+                                            <>
+                                                <div
+                                                    {...{
+                                                        className: header.column.getCanSort()
+                                                            ? 'cursor-pointer select-none'
+                                                            : '',
+                                                        onClick: header.column.getToggleSortingHandler(),
+                                                    }}
+                                                >
+                                                    {flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                                    {{
+                                                        asc: ' 🔼',
+                                                        desc: ' 🔽',
+                                                    }[header.column.getIsSorted() as string] ?? null}
                                                 </div>
-                                            ) : null}
-                                        </>
-                                    )}
-                                </th>
-                            )
-                        })}
-                    </tr>
-                ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map(row => {
+
+                                            </>
+                                        )}
+                                    </th>
+                                )
+                            })}
+                        </tr>
+                    ))}
+                    </thead>
+                    <tbody className="bg-neutral-200">
+                    {table.getRowModel().rows.map((row, index) => {
                         return (
                             <tr key={row.id}>
                                 {row.getVisibleCells().map(cell => {
                                     return (
-                                        <td key={cell.id}>
+                                        <td key={cell.id}
+                                            className={`px-2 py-0.5 ${index % 2 == 0 ? "bg-neutral-200" : "bg-neutral-100"}`}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()
@@ -359,8 +356,9 @@ export default function DataTable() {
                             </tr>
                         )
                     })}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
@@ -421,13 +419,13 @@ function Filter({
                     className="w-24 border shadow rounded"
                 />
             </div>
-            <div className="h-1" />
+            <div className="h-1"/>
         </div>
     ) : (
         <>
             <datalist id={column.id + 'list'}>
                 {sortedUniqueValues.slice(0, 100).map((value: any) => (
-                    <option value={value} key={value} />
+                    <option value={value} key={value}/>
                 ))}
             </datalist>
             <DebouncedInput
