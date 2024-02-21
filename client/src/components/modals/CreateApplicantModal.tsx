@@ -11,10 +11,11 @@ import {Applicant} from "../../../types.ts";
 type Props = {
     isOpen: boolean
     onClose: () => void
+    update: () => void
     applicant?: Applicant
 };
 
-const CreateApplicantModal = ({isOpen, onClose, applicant}: Props) => {
+const CreateApplicantModal = ({isOpen, onClose, update, applicant}: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const token = useAuthStore((state) => state.token);
 
@@ -65,6 +66,7 @@ const CreateApplicantModal = ({isOpen, onClose, applicant}: Props) => {
                     toast.success("Додано шукача")
                     //
                     reset()
+                    update()
                 }
             })
             .catch(error => {
