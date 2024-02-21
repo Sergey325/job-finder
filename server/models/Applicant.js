@@ -6,7 +6,6 @@ const ApplicantSchema = new mongoose.Schema(
             type: String,
             required: true,
             max: 20,
-            unique: true
         },
         lastName: {
             type: String,
