@@ -1,16 +1,21 @@
 import {useState} from "react";
-import CreateApplicantModal from "../../components/modals/CreateApplicantModal.tsx";
-import DataTable from "../../components/Seeker/DataTable.tsx";
-import Button from "../../components/UI/Button.tsx";
+import ApplicantsTab from "./tabs/ApplicantsTab.tsx";
+import VacanciesTab from "./tabs/VacanciesTab.tsx";
+import ContractsTab from "./tabs/ContractsTab.tsx";
+import Navbar from "../../components/UI/Navbar.tsx";
 
 const HomePage = () => {
-    const [isOpenModal, setIsOpenModal] = useState(false)
+
+    const [activeTab, setActiveTab] = useState('applicants');
+
+    const handleTabChange = (newTab: string) => setActiveTab(newTab);
 
     return (
         <div>
-            <Button label="add applicant" outline onClick={() => setIsOpenModal(true)}/>
-            <DataTable/>
-            <CreateApplicantModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}/>
+            <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
+            {activeTab === 'applicants' && <ApplicantsTab />}
+            {activeTab === 'vacancies' && <VacanciesTab />}
+            {activeTab === 'contracts' && <ContractsTab />}
         </div>
     );
 };

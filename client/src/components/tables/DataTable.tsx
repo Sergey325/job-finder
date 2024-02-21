@@ -8,14 +8,12 @@ import {
     getFacetedRowModel,
     getFacetedUniqueValues,
     getFacetedMinMaxValues,
-    getPaginationRowModel,
     sortingFns,
     getSortedRowModel,
     FilterFn,
     SortingFn,
     ColumnDef,
     flexRender,
-    FilterFns,
 } from '@tanstack/react-table'
 
 import {
@@ -34,121 +32,9 @@ declare module '@tanstack/table-core' {
     }
 }
 
-import {useEffect, useMemo, useReducer, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
+import {MdDeleteOutline, MdEdit, MdFileOpen} from "react-icons/md";
 
-type Seeker = {
-    id: string,
-    firstName: string
-    lastName: string
-    jobPosition: string
-    qualification: string
-    phoneNumber: string
-    email: string
-    cvUrl: string
-}
-
-const defaultData: Seeker[] = [
-    {
-        id: "1",
-        firstName: "John",
-        lastName: "Doe",
-        jobPosition: "Software Engineer",
-        qualification: "Bachelor's Degree in Computer Science",
-        phoneNumber: "123-456-7890",
-        email: "john.doe@example.com",
-        cvUrl: "https://example.com/johndoe_cv"
-    },
-    {
-        id: "2",
-        firstName: "Alice",
-        lastName: "Smith",
-        jobPosition: "Data Scientist",
-        qualification: "Master's Degree in Data Science",
-        phoneNumber: "987-654-3210",
-        email: "alice.smith@example.com",
-        cvUrl: "https://example.com/alicesmith_cv"
-    },
-    {
-        id: "3",
-        firstName: "Michael",
-        lastName: "Johnson",
-        jobPosition: "Web Developer",
-        qualification: "Bachelor's Degree in Web Development",
-        phoneNumber: "456-789-0123",
-        email: "michael.johnson@example.com",
-        cvUrl: "https://example.com/michaeljohnson_cv"
-    },
-    {
-        id: "4",
-        firstName: "Emily",
-        lastName: "Brown",
-        jobPosition: "UX Designer",
-        qualification: "Bachelor's Degree in Design",
-        phoneNumber: "789-012-3456",
-        email: "emily.brown@example.com",
-        cvUrl: "https://example.com/emilybrown_cv"
-    },
-    {
-        id: "5",
-        firstName: "David",
-        lastName: "Martinez",
-        jobPosition: "Data Analyst",
-        qualification: "Bachelor's Degree in Statistics",
-        phoneNumber: "012-345-6789",
-        email: "david.martinez@example.com",
-        cvUrl: "https://example.com/davidmartinez_cv"
-    },
-    {
-        id: "6",
-        firstName: "Sarah",
-        lastName: "Wilson",
-        jobPosition: "Marketing Manager",
-        qualification: "Bachelor's Degree in Marketing",
-        phoneNumber: "345-678-9012",
-        email: "sarah.wilson@example.com",
-        cvUrl: "https://example.com/sarahwilson_cv"
-    },
-    {
-        id: "7",
-        firstName: "Daniel",
-        lastName: "Thompson",
-        jobPosition: "Project Manager",
-        qualification: "Master's Degree in Business Administration",
-        phoneNumber: "678-901-2345",
-        email: "daniel.thompson@example.com",
-        cvUrl: "https://example.com/danielthompson_cv"
-    },
-    {
-        id: "8",
-        firstName: "Jessica",
-        lastName: "Garcia",
-        jobPosition: "HR Specialist",
-        qualification: "Bachelor's Degree in Human Resources",
-        phoneNumber: "901-234-5678",
-        email: "jessica.garcia@example.com",
-        cvUrl: "https://example.com/jessicagarcia_cv"
-    },
-    {
-        id: "9",
-        firstName: "Matthew",
-        lastName: "Roberts",
-        jobPosition: "Financial Analyst",
-        qualification: "Bachelor's Degree in Finance",
-        phoneNumber: "234-567-8901",
-        email: "matthew.roberts@example.com",
-        cvUrl: "https://example.com/matthewroberts_cv"
-    },
-    {
-        id: "10",
-        firstName: "Olivia",
-        lastName: "Lee",
-        jobPosition: "Software Developer",
-        qualification: "Bachelor's Degree in Computer Engineering",
-        phoneNumber: "567-890-1234",
-        email: "olivia.lee@example.com",
-        cvUrl: "https://example.com/oliviale_cv"
-    }
-];
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
     // Rank the item
@@ -163,58 +49,14 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
     return itemRank.passed
 }
 
-const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
-    let dir = 0
 
-    // Only sort by rank if the column has ranking information
-    if (rowA.columnFiltersMeta[columnId]) {
-        dir = compareItems(
-            rowA.columnFiltersMeta[columnId]?.itemRank!,
-            rowB.columnFiltersMeta[columnId]?.itemRank!
-        )
-    }
-
-    // Provide an alphanumeric fallback for when the item ranks are equal
-    return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
+interface DataTableProps {
+    columns: any[]; // Массив описаний столбцов таблицы
+    defaultData: any[]; // Массив данных для отображения в таблице
 }
 
 
-// const columns = [
-//     columnHelper.accessor(row => `${row.firstName} ${row.lastName}`, {
-//         id: 'fullName',
-//         cell: info => info.getValue(),
-//         header: () => 'ПІБ'
-//     }),
-//     columnHelper.accessor('jobPosition', {
-//         id: 'jobPosition',
-//         cell: info => info.getValue(),
-//         header: () => 'Посада'
-//     }),
-//     columnHelper.accessor('qualification', {
-//         id: 'qualification',
-//         cell: info => info.getValue(),
-//         header: () => 'Кваліфікація'
-//     }),
-//     columnHelper.accessor('phoneNumber', {
-//         id: 'phoneNumber',
-//         cell: info => info.getValue(),
-//         header: () => 'Номер телефону'
-//     }),
-//     columnHelper.accessor('email', {
-//         id: 'email',
-//         cell: info => info.getValue(),
-//         header: () => 'Пошта'
-//     }),
-//     columnHelper.accessor('cvUrl', {
-//         id: 'cvUrl',
-//         cell: info => info.getValue(),
-//         header: () => 'CV'
-//     }),
-//
-// ];
-
-
-export default function DataTable() {
+const DataTable: React.FC<DataTableProps> = ({ columns, defaultData }) => {
     // const rerender = useReducer(() => ({}), {})[1]
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -222,41 +64,11 @@ export default function DataTable() {
     )
     const [globalFilter, setGlobalFilter] = useState('')
 
-    const columns = useMemo<ColumnDef<Seeker, any>[]>(
-        () => [
-            {
-                accessorFn: row => `${row.firstName} ${row.lastName}`,
-                id: 'fullName',
-                header: 'Full Name',
-                cell: info => info.getValue(),
-                filterFn: 'fuzzy',
-                sortingFn: fuzzySort,
-            },
-            {
-                accessorKey: 'jobPosition',
-                header: () => 'Посада',
-            },
-            {
-                accessorKey: 'qualification',
-                header: () => 'Кваліфікація',
-            },
-            {
-                accessorKey: 'phoneNumber',
-                header: 'Номер',
-            },
-            {
-                accessorKey: 'email',
-                header: 'Пошта',
-            },
-            {
-                accessorKey: 'cvUrl',
-                header: 'CV',
-            },
-        ],
-        []
-    )
+    const [data, setData] = useState<any>([]);
 
-    const [data, setData] = useState(() => [...defaultData]);
+    useEffect(() => {
+        setData(defaultData);
+    }, [defaultData]);
 
     const table = useReactTable({
         data,
@@ -274,7 +86,6 @@ export default function DataTable() {
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        // getPaginationRowModel: getPaginationRowModel(),
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
         getFacetedMinMaxValues: getFacetedMinMaxValues(),
@@ -299,11 +110,11 @@ export default function DataTable() {
                     value={globalFilter ?? ''}
                     onChange={value => setGlobalFilter(String(value))}
                     className="p-2 font-lg shadow border border-block"
-                    placeholder="Search all columns..."
+                    placeholder="Пошук по колонках..."
                 />
             </div>
-            <div className="w-fit mt-2">
-                <table className="rounded-xl">
+            <div className="w-full mt-2">
+                <table className="rounded-xl w-full">
                     <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id} className="bg-neutral-300 ">
@@ -470,3 +281,5 @@ function DebouncedInput({
         <input {...props} value={value} onChange={e => setValue(e.target.value)} />
     )
 }
+
+export default DataTable;

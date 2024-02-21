@@ -16,12 +16,15 @@ const Button = ({label, onClick, disabled, outline, small, icon: Icon, gradient}
             onClick={onClick}
             disabled={disabled}
             className={`
-                relative
+                absolute
                 disabled:opacity-70 disabled:cursor-not-allowed
                 rounded-3xl
                 transition-all
                 duration-300
-                w-full
+                w-40
+                mx-2 
+                top-2 
+                right-0
                 ${outline ? "bg-slate-900" : "bg-primary-main"}
                 ${outline ? "shadow-[0_0_0_1px_rgba(100,116,139,1)]" : "shadow-[0_0_0_1px_rgba(6,182,212,1)]"}
                 ${outline ? "hover:shadow-[0_0_0_3px_rgba(100,116,139,1)]" : gradient ? "hover:drop-shadow-[0_2px_6px_rgba(137,63,237,0.90)]" : "hover:drop-shadow-[0_1px_3px_rgba(6,182,212,0.50)]"}
