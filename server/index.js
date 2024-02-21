@@ -9,7 +9,6 @@ import contractRoutes from "./routes/contracts.js";
 import vacancyRoutes from "./routes/vacancies.js";
 import bodyParser from "express";
 
-
 // CONFIGURATION
 dotenv.config()
 const app = express()

@@ -3,7 +3,7 @@ import Applicant from "../models/Applicant.js";
 // READ
 export const getAllApplicants = async (req, res) => {
     try {
-        const applicants = Applicant.find()
+        const applicants = await Applicant.find()
         res.status(200).json(applicants);
 
     } catch (error) {

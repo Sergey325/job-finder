@@ -3,7 +3,7 @@ import Vacancy from "../models/Vacancy.js";
 // READ
 export const getAllVacancies = async (req, res) => {
     try {
-        const vacancies = Vacancy.find()
+        const vacancies = await Vacancy.find()
         res.status(200).json(vacancies);
 
     } catch (error) {
