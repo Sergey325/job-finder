@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import useAuthStore from "../../../store";
+import useAuthStore from "../../../store/authStore.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
 import {ColumnDef} from "@tanstack/react-table";
@@ -9,11 +9,14 @@ import fuzzySort from "../../../components/tables/sorting.tsx";
 import DataTable from "../../../components/tables/DataTable.tsx";
 import Button from "../../../components/UI/Button.tsx";
 import CreateVacancyModal from "../../../components/modals/CreateVacancyModal.tsx";
+import useContractStore from "../../../store/contractStore.ts";
+import CreateContractModal from "../../../components/modals/CreateContractModal.tsx";
 
 const ContractsTab = () => {
     const [isOpenModal, setIsOpenModal] = useState(false)
     const [data, setData] = useState([]);
     const token = useAuthStore((state) => state.token);
+    const contract = useContractStore(state => state)
 
     const getContracts = async () => {
         try {
@@ -49,7 +52,7 @@ const ContractsTab = () => {
             },
             {
                 accessorKey: 'companyName',
-                cell: info => info.getValue(),
+                cell: info => <span className="pl-10">{info.getValue()}</span> ,
                 header: () => 'Назва компанії',
             },
             {
@@ -63,28 +66,18 @@ const ContractsTab = () => {
             {
                 accessorKey: 'companyAddress',
                 header: 'Адреса компанії',
-            },
-            // {
-            //     header: 'Дії',
-            //     cell: ({ row }) => {
-            //         return (
-            //             <div>
-            //                 <button onClick={() => (console.log("edit"))}><MdEdit /></button>
-            //                 <button onClick={() => (console.log("del"))}><MdDeleteOutline /></button>
-            //                 <button onClick={() => (console.log("add"))}><MdFileOpen /></button>
-            //             </div>
-            //         )
-            //     },
-            // }
+            }
         ],
         []
     )
 
     return (
-        <div className="relative">
-            <Button label="Додати вакансію" outline onClick={() => setIsOpenModal(true)}/>
-            <DataTable defaultData={data} columns={columns} />
-            <CreateVacancyModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} update={getContracts}/>
+        <div className="relative px-10 pt-5">
+            <div className="absolute w-40 mx-2 top-7 right-10">
+                <Button label="Створити договір" outline onClick={() => setIsOpenModal(true)}/>
+            </div>
+            <DataTable defaultData={data} columns={columns}/>
+            <CreateContractModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} update={getContracts}/>
         </div>
     )
 }

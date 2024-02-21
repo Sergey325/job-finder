@@ -156,7 +156,7 @@ const DataTable: React.FC<DataTableProps> = ({ columns, defaultData }) => {
                                 {row.getVisibleCells().map(cell => {
                                     return (
                                         <td key={cell.id}
-                                            className={`px-2 py-0.5 ${index % 2 == 0 ? "bg-neutral-200" : "bg-neutral-100"}`}>
+                                            className={`px-2 py-0.5 text-center ${index % 2 == 0 ? "bg-neutral-200" : "bg-neutral-100"}`}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()

@@ -5,7 +5,7 @@ import axios from "axios";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
-import useAuthStore from "../../store";
+import useAuthStore from "../../store/authStore.ts";
 
 type Props = {
 

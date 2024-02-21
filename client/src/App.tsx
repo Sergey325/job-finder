@@ -2,7 +2,7 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom"
 import LoginPage from "./scenes/loginPage";
 import HomePage from "./scenes/homePage";
 import {Toaster} from "react-hot-toast";
-import useAuthStore from "./store";
+import useAuthStore from "./store/authStore.ts";
 
 function App() {
     const isAuth = useAuthStore((state) => state.token );

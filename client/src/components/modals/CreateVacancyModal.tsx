@@ -4,7 +4,7 @@ import Modal from "./Modal.tsx";
 import FormInput from "../UI/FormInput.tsx";
 import axios from "axios";
 import toast from "react-hot-toast";
-import useAuthStore from "../../store";
+import useAuthStore from "../../store/authStore.ts";
 import {Vacancy} from "../../../types.ts";
 import DropDown from "../UI/DropDown.tsx";
 
