@@ -12,11 +12,12 @@ const getToken = () => {
 }
 
 
-interface AuthState {
+export interface AuthState {
     token: string | null;
     login: (token: string) => void;
     logout: () => void;
 }
+
 
 const localStorageKey = 'authState';
 
@@ -32,4 +33,4 @@ const useAuthStore = create<AuthState>((set) => ({
     }
 }));
 
-export default useAuthStore;
+export default useAuthStore

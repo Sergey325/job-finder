@@ -22,6 +22,10 @@ const ContractSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        salary: {
+            type: String,
+            required: true,
+        },
         companyAddress: {
             type: String,
             required: true,

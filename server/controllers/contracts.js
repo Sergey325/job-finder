@@ -10,3 +10,34 @@ export const getAllContracts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+// CREATE
+export const createContract = async (req, res) => {
+    try {
+        const {
+            applicantId,
+            vacancyId,
+            jobPosition,
+            applicantFullName,
+            companyName,
+            companyAddress,
+            salary
+        } = req.body;
+
+        const newContract = new Contract({
+            applicantId,
+            vacancyId,
+            jobPosition,
+            applicantFullName,
+            companyName,
+            companyAddress,
+            salary
+        });
+
+        const savedContract = await newContract.save();
+
+        res.status(201).json(savedContract);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

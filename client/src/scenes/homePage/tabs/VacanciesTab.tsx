@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import useAuthStore from "../../../store";
+import useAuthStore from "../../../store/authStore.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Button from "../../../components/UI/Button.tsx";
@@ -9,11 +9,12 @@ import {Vacancy} from "../../../../types.ts";
 import fuzzySort from "../../../components/tables/sorting.tsx";
 import {MdDeleteOutline, MdEdit, MdFileOpen} from "react-icons/md";
 import DataTable from "../../../components/tables/DataTable.tsx";
+import useContractStore from "../../../store/contractStore.ts";
 
 const VacanciesTab = () => {
     const [isOpenModal, setIsOpenModal] = useState(false)
     const [data, setData] = useState([]);
-
+    const contract = useContractStore(state => state)
     const token = useAuthStore((state) => state.token);
 
     const getVacancies = async () => {
@@ -28,6 +29,23 @@ const VacanciesTab = () => {
             )
             console.log(response.data)
             setData(response.data)
+        } catch (error) {
+            toast.error(`${error}`)
+        }
+    }
+
+    const deleteVacancy = async (id: any) => {
+        try {
+            const response = await axios.delete(
+                `${import.meta.env.VITE_ENDPOINT}/vacancies/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                }
+            )
+
+            getVacancies()
         } catch (error) {
             toast.error(`${error}`)
         }
@@ -71,22 +89,25 @@ const VacanciesTab = () => {
                 header: 'Дії',
                 cell: ({ row }) => {
                     return (
-                        <div>
-                            <button onClick={() => (console.log("edit"))}><MdEdit /></button>
-                            <button onClick={() => (console.log("del"))}><MdDeleteOutline /></button>
-                            <button onClick={() => (console.log("add"))}><MdFileOpen /></button>
+                        <div className="flex gap-3">
+                            <MdDeleteOutline size={30} className="cursor-pointer" onClick={() => { // @ts-ignore
+                                deleteVacancy(data[row.index]._id)
+                            }}/>
+                            <MdFileOpen size={28} className="cursor-pointer" onClick={() => contract.addVacancy(row.original)}/>
                         </div>
                     )
                 },
             }
         ],
-        []
+        [data]
     )
 
     return (
-        <div className="relative">
-            <Button label="Додати вакансію" outline onClick={() => setIsOpenModal(true)}/>
-            <DataTable defaultData={data} columns={columns} />
+        <div className="relative px-10 pt-5">
+            <div className="absolute w-40 mx-2 top-7 right-10">
+                <Button label="Додати вакансію" outline onClick={() => setIsOpenModal(true)}/>
+            </div>
+            <DataTable defaultData={data} columns={columns}/>
             <CreateVacancyModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} update={getVacancies}/>
         </div>
     )

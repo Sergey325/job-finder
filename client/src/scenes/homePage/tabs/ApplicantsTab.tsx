@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import useAuthStore from "../../../store";
+import useAuthStore from "../../../store/authStore.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
 import CreateApplicantModal from "../../../components/modals/CreateApplicantModal.tsx";
@@ -9,12 +9,13 @@ import {Applicant} from "../../../../types.ts";
 import fuzzySort from "../../../components/tables/sorting.tsx";
 import {MdDeleteOutline, MdEdit, MdFileOpen} from "react-icons/md";
 import DataTable from "../../../components/tables/DataTable.tsx";
+import useContractStore from "../../../store/contractStore.ts";
 
 
 const ApplicantsTab = () => {
     const [isOpenModal, setIsOpenModal] = useState(false)
     const [data, setData] = useState([]);
-
+    const contract = useContractStore((state) => state);
     const token = useAuthStore((state) => state.token);
 
     const getApplicants = async () => {
@@ -44,9 +45,8 @@ const ApplicantsTab = () => {
                     }
                 }
             )
-            console.log(response.data)
 
-            setData(response.data)
+            getApplicants()
         } catch (error) {
             toast.error(`${error}`)
         }
@@ -77,25 +77,22 @@ const ApplicantsTab = () => {
             {
                 accessorKey: 'cvUrl',
                 header: 'CV',
-                cell: (value) => <a href={value.getValue()} target="_blank">link</a>
+                cell: ({row}) => <a className="underline" href={row.original.cvUrl} target="_blank">{`${row.original.firstName}-${row.original.lastName}CV`}</a>
             },
             {
                 header: 'Дії',
                 cell: ({ row }) => {
                     return (
-                        <div className="flex">
-                            <button onClick={() => (console.log(""))}><MdEdit size={25} /></button>
-                            <button onClick={() => {
-                                // deleteApplicant(data[row.index]._id)
-                                // console.log(data[row.index], row.index)
-                            }}><MdDeleteOutline size={25} /></button>
-                            <button onClick={() => (console.log("add"))}><MdFileOpen size={25} /></button>
+                        <div className="flex gap-3">
+                            <MdDeleteOutline size={30} className="cursor-pointer" onClick={() => { // @ts-ignore
+                                deleteApplicant(data[row.index]._id)}}/>
+                            <MdFileOpen size={28} className="cursor-pointer" onClick={() => contract.addApplicant(row.original)}/>
                         </div>
                     )
                 },
             }
         ],
-        []
+        [data]
     )
 
     useEffect(() => {
@@ -103,8 +100,10 @@ const ApplicantsTab = () => {
     }, []);
 
     return (
-        <div className="relative">
-            <Button label="Додати шукача" outline onClick={() => setIsOpenModal(true)}/>
+        <div className="relative px-10 pt-5">
+            <div className="absolute w-40 mx-2 top-7 right-10">
+                <Button label="Додати шукача" outline onClick={() => setIsOpenModal(true)}/>
+            </div>
             <DataTable defaultData={data} columns={columns} />
             <CreateApplicantModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} update={getApplicants}/>
         </div>
