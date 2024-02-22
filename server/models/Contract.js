@@ -30,6 +30,10 @@ const ContractSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        commission: {
+            type: String,
+            required: true,
+        },
     }, {timestamps: true}
 )
 

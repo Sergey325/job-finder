@@ -21,7 +21,8 @@ export const createContract = async (req, res) => {
             applicantFullName,
             companyName,
             companyAddress,
-            salary
+            salary,
+            commission
         } = req.body;
 
         const newContract = new Contract({
@@ -31,7 +32,8 @@ export const createContract = async (req, res) => {
             applicantFullName,
             companyName,
             companyAddress,
-            salary
+            salary,
+            commission
         });
 
         const savedContract = await newContract.save();

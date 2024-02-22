@@ -18,6 +18,16 @@ const CreateContractModal = ({isOpen, onClose, update, vacancy}: Props) => {
     const token = useAuthStore((state) => state.token);
     const contract = useContractStore(state => state)
 
+    function getRandomNumber(): number {
+        const min = 150;
+        const max = 300;
+        // Генерируем случайное число в диапазоне от min до max
+        let randomNumber = Math.random() * (max - min) + min;
+        // Округляем число до сотых
+        randomNumber = Math.round(randomNumber * 100) / 100;
+        return randomNumber;
+    }
+
     const onSubmit = () => {
         if (!contract.applicant) {
             toast.error("Шукача не додано")
@@ -38,7 +48,8 @@ const CreateContractModal = ({isOpen, onClose, update, vacancy}: Props) => {
                 applicantFullName: `${contract.applicant?.firstName} ${contract.applicant?.lastName}`,
                 companyName: contract.vacancy?.companyName,
                 companyAddress: contract.vacancy?.location,
-                salary: contract.vacancy?.salary
+                salary: contract.vacancy?.salary,
+                commission: getRandomNumber().toString(),
             },
             {
                 headers: {

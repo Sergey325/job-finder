@@ -27,6 +27,7 @@ const Navbar: React.FC<{ activeTab: string; onTabChange: (newTab: string) => voi
                 >
                     Договори
                 </a>
+                
             </div>
 
         </nav>
