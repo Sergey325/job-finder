@@ -15,7 +15,7 @@ export type Vacancy = {
     location: string
     salary: string
     workType: string,
-    companyName: string
+    companyName: string,
 }
 
 export type Contract = {
@@ -24,5 +24,6 @@ export type Contract = {
     companyName: string,
     applicantFullName: string,
     jobPosition: string,
-    companyAddress: string
+    companyAddress: string,
+    commission: string
 }

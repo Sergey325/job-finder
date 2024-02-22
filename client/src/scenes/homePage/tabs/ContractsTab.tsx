@@ -39,6 +39,16 @@ const ContractsTab = () => {
         getContracts()
     }, []);
 
+    function getRandomNumber(): number {
+        const min = 150;
+        const max = 300;
+        // Генерируем случайное число в диапазоне от min до max
+        let randomNumber = Math.random() * (max - min) + min;
+        // Округляем число до сотых
+        randomNumber = Math.round(randomNumber * 100) / 100;
+        return randomNumber;
+    }
+
     const columns = useMemo<ColumnDef<Contract, any>[]>(
         () => [
             {
@@ -52,7 +62,7 @@ const ContractsTab = () => {
             },
             {
                 accessorKey: 'companyName',
-                cell: info => <span className="pl-10">{info.getValue()}</span> ,
+                cell: info => <span>{info.getValue()}</span> ,
                 header: () => 'Назва компанії',
             },
             {
@@ -66,6 +76,11 @@ const ContractsTab = () => {
             {
                 accessorKey: 'companyAddress',
                 header: 'Адреса компанії',
+            },
+            {
+                accessorKey: 'commission',
+                header: 'Комісійні',
+                cell: ({ row }) => <div>{row.original.commission}$</div>
             }
         ],
         []
